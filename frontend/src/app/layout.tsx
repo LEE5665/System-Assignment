@@ -1,5 +1,5 @@
-import NavBar from '@/componets/NavBar';
 import type { Metadata } from 'next';
+import NavBar from 'src/componets/NavBar';
 import './globals.css';
 export const metadata: Metadata = {
   title: 'AMP',
