@@ -1,0 +1,41 @@
+.attendanceItem {
+  padding: 10px;
+  text-align: center;
+  border-radius: 8px;
+  font-size: 1.3rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 2px solid transparent;
+}
+
+.attendanceItem:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.NoChoice {
+  background-color: #f0f0f0; /* 흰색 */
+  border-color: #e0e0e0;
+}
+
+.present {
+  background-color: #a5d6a7; /* 초록색 */
+  border-color: #66bb6a;
+}
+
+.tardy {
+  background-color: #fff59d; /* 노란색 */
+  border-color: #fdd835;
+}
+
+.absent {
+  background-color: #ef9a9a; /* 빨간색 */
+  border-color: #e57373;
+}
+
+.attendanceItem span {
+  display: block;
+  margin: 5px 0;
+}
