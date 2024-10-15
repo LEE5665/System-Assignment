@@ -14,7 +14,7 @@ export default async function CourseList({ courses }) {
     <div>
       {courses.map((course: string, index: string) => (
         <div key={index}>
-          <Link className={styles.courseLink} href={`${course}/detail`}>
+          <Link className={styles.courseLink} href={`detail/${encodeURIComponent(course)}`}>
             <div className={styles.courseItem}>{course}</div>
           </Link>
         </div>

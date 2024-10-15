@@ -2,14 +2,14 @@ import AttendanceTable from '@/components/AttendanceTable';
 import styles from '@/styles/professor-detail.module.css';
 export async function generateMetadata({ params: { id } }: IdParms) {
   return {
-    title: decodeURI(id),
+    title: decodeURIComponent(id),
   };
 }
 export default async function Page({ params: { id } }: IdParms) {
   // fetch 해와
   const _data: ProfDetailParms = {
     class_id: '1',
-    class_name: decodeURI(id),
+    class_name: decodeURIComponent(id),
     week: '7',
     students: [
       ['200200161', '김지훈'],
