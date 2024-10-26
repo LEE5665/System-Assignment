@@ -1,6 +1,6 @@
 .table {
   display: grid;
-  grid-template-columns: repeat(5, 1fr); /* 5개의 열로 구성 */
+  grid-template-columns: repeat(5, 1fr);
   gap: 10px;
   padding: 20px;
 }
@@ -11,7 +11,7 @@
   border-radius: 8px;
   padding: 20px;
   text-align: center;
-  font-size: 16px;
+  font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
@@ -20,7 +20,6 @@
   margin: 5px 0;
 }
 
-/* 상태별 색상 */
 .default {
   background-color: #e0e0e0;
 }
