@@ -18,8 +18,7 @@ async function getData() {
   }
 }
 
-//await getData();
 export default async function Page() {
-  const data = subjectData;
-  return <DashBoard data={data} />;
+  // const data = await getData();
+  return <DashBoard data={subjectData} />;
 }

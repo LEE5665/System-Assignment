@@ -62,3 +62,46 @@ export const subjectData = [
   { id: '17', title: '정보보안', grade: '3', class: 'B' },
   { id: '18', title: '정보보안', grade: '3', class: 'C' },
 ];
+
+export const attendanceData = [
+  {
+    id: '4',
+    data: [
+      { week: 1, type: '정상' },
+      { week: 2, type: '지각' },
+      { week: 3, type: '결석' },
+      { week: 4, type: '정상' },
+      { week: 5, type: '결석' },
+      { week: 6, type: '정상' },
+      { week: 7, type: '지각' },
+      { week: 8, type: '정상' },
+      { week: 9, type: '정상' },
+      { week: 10, type: '결석' },
+      { week: 11, type: '정상' },
+      { week: 12, type: '지각' },
+      { week: 13, type: '정상' },
+      { week: 14, type: '정상' },
+      { week: 15, type: '정상' },
+    ],
+  },
+  {
+    id: '10',
+    data: [
+      { week: 1, type: '정상' },
+      { week: 2, type: '지각' },
+      { week: 3, type: '결석' },
+      { week: 4, type: '정상' },
+      { week: 5, type: '결석' },
+      { week: 6, type: '정상' },
+      { week: 7, type: '지각' },
+      { week: 8, type: '정상' },
+      { week: 9, type: '정상' },
+      { week: 10, type: '결석' },
+      { week: 11, type: '정상' },
+      { week: 12, type: '지각' },
+      { week: 13, type: '정상' },
+      { week: 14, type: '정상' },
+      { week: 15, type: '정상' },
+    ],
+  },
+];

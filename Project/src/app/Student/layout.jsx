@@ -1,4 +1,5 @@
-import StudentNavBar from './../../Component/학생/내비게이션/NavBar';
+import NavBar from '../../Component/공용/내비게이션/NavBar';
+
 export const metadata = {
   title: '학생',
 };
@@ -6,7 +7,7 @@ export const metadata = {
 export default function Layout({ children }) {
   return (
     <div className="back">
-      <StudentNavBar />
+      <NavBar type={'Student'} />
       <div className="content">{children}</div>
     </div>
   );

@@ -3,15 +3,15 @@ import Link from 'next/link';
 import logoutImage from '../../../../public/logout.png';
 import myPageImage from '../../../../public/mypage.png';
 import styles from './NavBar.module.css';
-export default function StudentNavBar() {
+export default function NavBar({ type }) {
   return (
     <div className={styles.navbar}>
       <div className={styles.container}>
-        <Link href={'/Student'} className={styles.brand} title="홈페이지">
+        <Link href={`/${type}`} className={styles.brand} title="홈페이지">
           ACW
         </Link>
         <div className={styles.mypageButtons}>
-          <Link href={'/Student/mypage'} className={styles.mypageButton}>
+          <Link href={`/${type}/mypage`} className={styles.mypageButton}>
             <Image src={myPageImage} title="마이페이지" alt="마이페이지" width={50} height={50} />
           </Link>
 

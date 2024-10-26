@@ -1,5 +1,4 @@
-import ProfessorNavBar from './../../Component/교수/내비게이션/NavBar';
-
+import NavBar from './../../Component/공용/내비게이션/NavBar';
 export const metadata = {
   title: '교수',
 };
@@ -7,7 +6,7 @@ export const metadata = {
 export default function Layout({ children }) {
   return (
     <div className="back">
-      <ProfessorNavBar />
+      <NavBar type={'Professor'} />
       <div className="content">{children}</div>
     </div>
   );
