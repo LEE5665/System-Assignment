@@ -1,0 +1,16 @@
+body {
+  padding: 0;
+  margin: 0;
+}
+.back {
+  background-color: aliceblue;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.content {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  flex-grow: 1;
+}

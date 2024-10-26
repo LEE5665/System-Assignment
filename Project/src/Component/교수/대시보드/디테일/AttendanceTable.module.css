@@ -1,0 +1,38 @@
+.table {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5개의 열로 구성 */
+  gap: 10px;
+  padding: 20px;
+}
+
+.cell {
+  background-color: #e0e0e0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cell div {
+  margin: 5px 0;
+}
+
+/* 상태별 색상 */
+.default {
+  background-color: #e0e0e0;
+}
+
+.green {
+  background-color: #a5d6a7;
+}
+
+.yellow {
+  background-color: #fff59d;
+}
+
+.red {
+  background-color: #ef9a9a;
+}
