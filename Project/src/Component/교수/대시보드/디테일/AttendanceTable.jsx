@@ -9,7 +9,7 @@ const STATUS = {
   3: { label: '결석', color: 'red' },
 };
 
-export default function AttendanceTable({ SaveInfo, data, subjectName, weekNumber }) {
+export default function AttendanceTable({ SaveInfo, data, subjectData, weekNumber }) {
   const [statuses, setStatuses] = useState(data.reduce((acc, cur) => ({ ...acc, [cur.id]: -1 }), {}));
   const [week, setWeek] = useState(weekNumber);
 
@@ -26,11 +26,15 @@ export default function AttendanceTable({ SaveInfo, data, subjectName, weekNumbe
   };
 
   const saveAttendance = async () => {
-    const result = await SaveInfo(statuses);
-    if (result) {
-      alert('출석이 저장되었습니다.');
+    if (!Object.values(statuses).some((status) => status === -1)) {
+      const result = await SaveInfo(statuses);
+      if (result) {
+        alert('출석이 저장되었습니다.');
+      } else {
+        alert('출석 저장에 실패했습니다.');
+      }
     } else {
-      alert('출석 저장에 실패했습니다.');
+      alert('아직 체크되지 않은 학생이 있습니다.');
     }
   };
 
@@ -42,7 +46,7 @@ export default function AttendanceTable({ SaveInfo, data, subjectName, weekNumbe
     <div className={styles.card}>
       <div className={styles.header}>
         <div className={styles.subjectInfo}>
-          {subjectName}{' '}
+          {`${subjectData.title} - ${subjectData.grade}학년 ${subjectData.class}반 `}
           <select value={week} onChange={handleWeekChange} className={styles.dropdown}>
             {Array.from({ length: 15 }, (_, i) => (
               <option key={i + 1} value={i + 1}>
@@ -69,7 +73,7 @@ export default function AttendanceTable({ SaveInfo, data, subjectName, weekNumbe
               className={`${styles.cell} ${styles[STATUS[currentStatus]?.color]}`}
               onClick={() => handleClick(student.id)}
             >
-              <div>{student.number}</div>
+              <div>{student.id}</div>
               <div>{student.name}</div>
             </button>
           );
