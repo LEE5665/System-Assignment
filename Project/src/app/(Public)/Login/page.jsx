@@ -1,4 +1,4 @@
-import LoginComponent from '@/Component/Auth/Login/Login';
+import LoginComponent from '@/src/Component/계정/로그인/Login';
 import { cookies } from 'next/headers';
 
 async function login({ id, password }) {

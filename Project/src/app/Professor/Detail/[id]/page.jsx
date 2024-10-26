@@ -1,4 +1,4 @@
-import AttendanceTable from '@/Component/Professor/Dashboard/Detail/AttendanceTable';
+import AttendanceTable from '@/src/Component/교수/대시보드/디테일/AttendanceTable';
 
 export default async function Page({ params: { id } }) {
   const data = [
