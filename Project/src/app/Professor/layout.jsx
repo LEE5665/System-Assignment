@@ -1,4 +1,4 @@
-import ProfessorNavBar from './../../Component/교수/내비게이션바/NavBar';
+import ProfessorNavBar from '@/Component/Professor/NavBar/NavBar';
 
 export const metadata = {
   title: '교수',

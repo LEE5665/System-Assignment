@@ -1,5 +1,5 @@
+import LoginComponent from '@/Component/Auth/Login/Login';
 import { cookies } from 'next/headers';
-import LoginComponent from '../../../Component/계정/Login/Login';
 
 async function login({ id, password }) {
   'use server';

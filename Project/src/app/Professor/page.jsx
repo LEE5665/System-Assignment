@@ -1,5 +1,5 @@
-import { getTokenId } from '../../action/token';
-import DashBoard from './../../Component/교수/대시보드/DashBoard';
+import { getTokenId } from '@/action/token';
+import DashBoard from '@/Component/Professor/Dashboard/DashBoard';
 async function getData() {
   'use server';
   const response = await fetch(process.env.GET_MAIN_PAGE_DATA_API_URL, {

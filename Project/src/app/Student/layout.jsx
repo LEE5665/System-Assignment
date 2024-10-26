@@ -1,4 +1,4 @@
-import StudentNavBar from '../../Component/학생/내비게이션바/NavBar';
+import StudentNavBar from '@/Component/Student/NavBar/NavBar';
 
 export const metadata = {
   title: '학생',
