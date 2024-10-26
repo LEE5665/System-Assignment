@@ -9,8 +9,9 @@ const STATUS = {
   3: { label: '결석', color: 'red' },
 };
 
-export default function AttendanceTable({ data, subjectName, weekNumber }) {
+export default function AttendanceTable({ SaveInfo, data, subjectName, weekNumber }) {
   const [statuses, setStatuses] = useState(data.reduce((acc, cur) => ({ ...acc, [cur.id]: -1 }), {}));
+  const [week, setWeek] = useState(weekNumber);
 
   const handleClick = (id) => {
     setStatuses((prevStatuses) => ({
@@ -24,15 +25,31 @@ export default function AttendanceTable({ data, subjectName, weekNumber }) {
     setStatuses(newStatuses);
   };
 
-  const saveAttendance = () => {
-    console.log('출석 저장:', statuses);
+  const saveAttendance = async () => {
+    const result = await SaveInfo(statuses);
+    if (result) {
+      alert('출석이 저장되었습니다.');
+    } else {
+      alert('출석 저장에 실패했습니다.');
+    }
+  };
+
+  const handleWeekChange = (event) => {
+    setWeek(event.target.value);
   };
 
   return (
     <div className={styles.card}>
       <div className={styles.header}>
         <div className={styles.subjectInfo}>
-          {subjectName} - {weekNumber}주차
+          {subjectName}{' '}
+          <select value={week} onChange={handleWeekChange} className={styles.dropdown}>
+            {Array.from({ length: 15 }, (_, i) => (
+              <option key={i + 1} value={i + 1}>
+                {i + 1}주차
+              </option>
+            ))}
+          </select>
         </div>
         <div className={styles.buttons}>
           <button onClick={markAllAsPresent} className={styles.actionButton}>

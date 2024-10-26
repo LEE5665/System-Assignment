@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import logoutImage from '../../../public/logout.png';
-import myPageImage from '../../../public/mypage.png';
+import logoutImage from '../../../../public/logout.png';
+import myPageImage from '../../../../public/mypage.png';
 import styles from './NavBar.module.css';
 export default function StudentNavBar() {
   return (

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 export async function POST(request) {
   const { id, password } = await request.json();
-  console.log(id, password);
+  // console.log(id, password);
   if (id == '교수') {
     const accessToken = { name: '아무개', role: 'Professor', id: '1234' };
     const refreshToken = {};
