@@ -2,22 +2,9 @@
 import { useState } from 'react';
 import { attendanceData, subjectData } from '../../../temp/temp.data';
 import styles from './DashBoard.module.css';
+import AttendanceStatus from './디테일/AttendanceStatus';
 
-function getAttendanceSummary(attendance) {
-  const summary = {
-    정상: 0,
-    지각: 0,
-    결석: 0,
-  };
-
-  attendance.forEach((entry) => {
-    summary[entry.type] += 1;
-  });
-
-  return summary;
-}
-
-export default function AttendanceSummary() {
+export default function DashBoard() {
   const [openSubject, setOpenSubject] = useState(null);
 
   const handleToggleDropdown = (id) => {
@@ -25,12 +12,14 @@ export default function AttendanceSummary() {
   };
 
   return (
-    <div className={styles.attendanceSummary}>
+    <div className={styles.dashboard}>
       {attendanceData.map((attendance) => {
         const subject = subjectData.find((sub) => sub.id === attendance.id);
-        const summary = getAttendanceSummary(attendance.data);
-
         if (!subject) return null;
+
+        const totalPresent = attendance.data.filter((d) => d.type === '정상').length;
+        const totalLate = attendance.data.filter((d) => d.type === '지각').length;
+        const totalAbsent = attendance.data.filter((d) => d.type === '결석').length;
 
         return (
           <div key={subject.id} className={styles.subjectContainer}>
@@ -39,24 +28,16 @@ export default function AttendanceSummary() {
               className={styles.subjectButton}
               aria-expanded={openSubject === subject.id}
             >
-              <div className={styles.subjectInfo}>
-                {subject.title} - {subject.grade}학년 {subject.class}반
-              </div>
-              <div className={styles.attendanceInfo}>
-                출석: {summary['정상']} | 지각: {summary['지각']} | 결석: {summary['결석']}
-              </div>
+              {subject.title} - {subject.grade}학년 {subject.class}반
+              <span className={styles.attendanceInfo}>
+                출석: {totalPresent} | 지각: {totalLate} | 결석: {totalAbsent}
+              </span>
               <span className={styles.arrow}>{openSubject === subject.id ? '▲' : '▼'}</span>
             </button>
 
             {openSubject === subject.id && (
               <div className={styles.dropdown}>
-                <div className={styles.attendanceDetails}>
-                  {attendance.data.map((weekInfo) => (
-                    <div key={weekInfo.week}>
-                      {weekInfo.week}주차: {weekInfo.type}
-                    </div>
-                  ))}
-                </div>
+                <AttendanceStatus attendanceData={attendance.data} />
               </div>
             )}
           </div>

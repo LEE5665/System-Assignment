@@ -1,9 +1,8 @@
-.attendanceSummary {
+.dashboard {
   width: 100%;
   max-width: 900px;
   margin: 0 auto;
   padding: 20px;
-  padding-top: 5%;
 }
 
 .subjectContainer {
@@ -14,34 +13,31 @@
   width: 100%;
   padding: 15px;
   background-color: #0070f3;
-  color: #fff;
+  color: white;
   border: none;
   border-radius: 5px;
   font-size: 1.5rem;
   cursor: pointer;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  position: relative;
+  gap: 15%;
 }
 
 .subjectButton:hover {
   background-color: #005bb5;
 }
 
-.subjectInfo {
-  flex-grow: 1;
-}
-
 .attendanceInfo {
   margin-left: 20px;
   white-space: nowrap;
-  flex-grow: 1;
-  text-align: center;
 }
 
 .arrow {
   font-size: 1.2rem;
-  margin-left: 20px;
+  position: absolute;
+  right: 1rem;
 }
 
 .dropdown {
@@ -51,35 +47,4 @@
   background-color: #f9f9f9;
   border-radius: 5px;
   padding: 15px;
-}
-
-.attendanceDetails {
-  margin-top: 10px;
-}
-
-.attendanceDetails div {
-  margin-bottom: 5px;
-  font-size: 1.2rem;
-}
-
-@media (max-width: 768px) {
-  .subjectButton {
-    font-size: 1.3rem;
-  }
-
-  .attendanceInfo {
-    margin-left: 10px;
-  }
-}
-
-@media (max-width: 480px) {
-  .subjectButton {
-    font-size: 1.1rem;
-  }
-
-  .attendanceInfo {
-    margin-left: 5px;
-    white-space: normal;
-    text-align: left;
-  }
 }
