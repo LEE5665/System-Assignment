@@ -4,6 +4,7 @@ import logoutImage from '../../../../public/logout.png';
 import myPageImage from '../../../../public/mypage.png';
 import styles from './NavBar.module.css';
 export default function NavBar({ type }) {
+
   return (
     <div className={styles.navbar}>
       <div className={styles.container}>

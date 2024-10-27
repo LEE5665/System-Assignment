@@ -90,7 +90,11 @@ export default function RegisterPage() {
                     sameSite: 'lax'
                 });
                 alert("일단 회원가입됨 쿠키추가해줘야지 :)");
-                router.push('/');
+                if (isStudent) {
+                    router.push('/Student');
+                } else {
+                    router.push('/Professor');
+                }
             }
         } catch (error) {
             setError('오류');

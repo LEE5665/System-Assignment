@@ -66,35 +66,23 @@ export async function middleware(request) {
   const accessToken = request.cookies.get('accessToken')?.value || '';
   const refreshToken = request.cookies.get('refreshToken')?.value || '';
 
+  console.log("미들웨어 작동됨");
+
   // 로그아웃 처리 함수
   async function handleLogOut() {
-    const response = NextResponse.redirect(new URL('/', request.url));
+    const response = NextResponse.redirect(new URL(`/`, request.url));
     await LogOut(response); // refreshToken.value가 있을 때만 로그아웃 처리
     return response;
   }
 
     // 로그아웃 경로일 경우
     if (request.nextUrl.pathname === '/LogOut') {
-      console.log("이거됨");
-      return await handleLogOut(); // handleLogOut의 결과를 기다림
+      return NextResponse.next();
+      // console.log("이거됨")
+      // return await handleLogOut(); // handleLogOut의 결과를 기다림
     }
 
   // 로그인 안한 경우
-  if (!PUBLIC_ROUTES.includes(request.nextUrl.pathname) && !accessToken) {
-    return NextResponse.redirect(new URL('/Login', request.url));
-  }
-
-  // accessToken이 없고 refreshToken이 있는 경우
-  // if (!accessToken && refreshToken) {
-  //   if (!refreshToken.value) {
-  //     console.error('미들웨어에서 유효하지 않은 리프레시 토큰:', refreshToken.value);
-  //     return NextResponse.redirect(new URL('/signin', request.url));
-  //   }
-
-  //   const response = NextResponse.redirect(new URL('/signin', request.url));
-  //   await LogOut(refreshToken.value, response); // refreshToken.value가 유효한 경우 로그아웃 처리
-  //   return response;
-  // }
   if (!PUBLIC_ROUTES.includes(request.nextUrl.pathname) && !accessToken) {
     if (refreshToken) {
       const newAccessToken = await refreshAccessToken(refreshToken);
@@ -108,7 +96,7 @@ export async function middleware(request) {
         });
         return NextResponse.next();
       } else {
-        return NextResponse.redirect(new URL('/signin', request.url));
+        return NextResponse.redirect(new URL('/Register', request.url));
       }
     } else {
       return NextResponse.redirect(new URL('/Login', request.url));

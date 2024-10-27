@@ -28,7 +28,7 @@ export default function LoginComponent({ login }) {
       });
 
       if (response.status === 200) {
-        const { accessToken, refreshToken, role } = response.data;
+        const { accessToken, refreshToken } = response.data;
         Cookies.set('accessToken', accessToken, {
           httpOnly: false,
           secure: true,
@@ -43,7 +43,12 @@ export default function LoginComponent({ login }) {
           sameSite: 'Lax',
           expires: 7,
         });
-        router.push('/');
+        if (isStudent) {
+          router.push('/Student');
+          console.log("작동함");
+      } else {
+          router.push('/Professor');
+      }
       } else {
         setError('로그인에 실패했습니다. 다시 시도하세요.');
       }
