@@ -2,6 +2,8 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import styles from './Login.module.css';
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
 export default function LoginComponent({ login }) {
   const [id, setId] = useState('');
@@ -17,15 +19,37 @@ export default function LoginComponent({ login }) {
       setError('아이디, 비밀번호가 없습니다.');
       return;
     }
+    try {
+      // 서버로 로그인 요청을 보냅니다
+      const response = await axios.post('/api/auth/login', {
+        id,
+        password,
+        isStudent,
+      });
 
-    const response = await login({ id: id, password: password });
-
-    if (response == null) {
-      setError('로그인에 실패했습니다. 다시 시도하세요.');
-    } else if (response == '학생') {
-      router.push('/Student');
-    } else if (response == '교수') {
-      router.push('/Professor');
+      if (response.status === 200) {
+        const { accessToken, refreshToken, role } = response.data;
+        Cookies.set('accessToken', accessToken, {
+          httpOnly: false,
+          secure: true,
+          path: '/',
+          sameSite: 'Lax',
+          expires: 1/24,
+        });
+        Cookies.set('refreshToken', refreshToken, {
+          httpOnly: false,
+          secure: true,
+          path: '/',
+          sameSite: 'Lax',
+          expires: 7,
+        });
+        router.push('/');
+      } else {
+        setError('로그인에 실패했습니다. 다시 시도하세요.');
+      }
+    } catch (error) {
+      console.error('로그인 오류:', error);
+      setError('서버와 연결할 수 없습니다. 다시 시도하세요.');
     }
   };
 

@@ -1,33 +1,67 @@
-import { NextResponse } from 'next/server';
+import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcryptjs"
+import jwt from 'jsonwebtoken';
 
-export async function POST(request) {
-  const { id, password } = await request.json();
-  // console.log(id, password);
-  if (id == '교수') {
-    const accessToken = { name: '아무개', role: 'Professor', id: '1234' };
-    const refreshToken = {};
-    return NextResponse.json(
-      {
-        accessToken: JSON.stringify(accessToken),
-        refreshToken: JSON.stringify(refreshToken),
-        role: '교수',
-        message: '로그인 성공적',
-      },
-      { status: 200 }
+const prisma = new PrismaClient();
+
+export async function POST(req) {
+  try {
+    const { id, password, isStudent } = await req.json();
+
+    const user = await prisma.user.findUnique({
+      where: {
+        Number: id
+      }
+    });
+    if (!user) {
+      return new Response(JSON.stringify({ error: '사용자를 찾을 수 없습니다.' }), { status: 401 });
+    }
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return NextResponse.json({ error: '비밀번호가 일치하지 않습니다.' }, { status: 401 });
+    }
+    const accessToken = jwt.sign(
+      { userId: user.id, name: user.name, role: isStudent ? 'Student' : 'Professor' },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
     );
-  } else if (id == '학생') {
-    const accessToken = { name: '홍길동', role: 'Student', id: '2345' };
-    const refreshToken = {};
-    return NextResponse.json(
-      {
-        accessToken: JSON.stringify(accessToken),
-        refreshToken: JSON.stringify(refreshToken),
-        role: '학생',
-        message: '로그인 성공적',
-      },
-      { status: 200 }
+    const refreshToken = jwt.sign(
+      { userId: user.id, name: user.name, role: isStudent ? 'Student' : 'Professor' },
+      process.env.JWT_SECRET,
+      { expiresIn: '7d' }
     );
-  } else {
-    return NextResponse.json({ error: '까비 그거 아님' }, { status: 401 });
+    return new Response(JSON.stringify({ accessToken, refreshToken }), { status: 200 });
+  } catch (error) {
+    console.log(error);
+    return new Response(JSON.stringify({ error: '서버 오류가 발생했습니다.' }), { status: 500 });
   }
 }
+// console.log(id, password);
+//   if (id == '교수') {
+//     const accessToken = { name: '아무개', role: 'Professor', id: '1234' };
+//     const refreshToken = {};
+//     return NextResponse.json(
+//       {
+//         accessToken: JSON.stringify(accessToken),
+//         refreshToken: JSON.stringify(refreshToken),
+//         role: '교수',
+//         message: '로그인 성공적',
+//       },
+//       { status: 200 }
+//     );
+//   } else if (id == '학생') {
+//     const accessToken = { name: '홍길동', role: 'Student', id: '2345' };
+//     const refreshToken = {};
+//     return NextResponse.json(
+//       {
+//         accessToken: JSON.stringify(accessToken),
+//         refreshToken: JSON.stringify(refreshToken),
+//         role: '학생',
+//         message: '로그인 성공적',
+//       },
+//       { status: 200 }
+//     );
+//   } else {
+//     return NextResponse.json({ error: '까비 그거 아님' }, { status: 401 });
+//   }
+// }
