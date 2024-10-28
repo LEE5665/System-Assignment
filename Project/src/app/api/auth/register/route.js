@@ -7,6 +7,10 @@ const prisma = new PrismaClient();
 export async function POST(req) {
     try {
         const { id, password, isStudent, birthdate, phone, email, name } = await req.json();
+        //교수 3자리 학생 6자리
+        if( !(id.length == 3 && !isStudent || id.length == 6 && isStudent) ) {
+            return new Response(JSON.stringify(), { status: 400 });
+        }
         const hashpassword = await bcrypt.hash(password, 10);
         const birthDate = new Date(birthdate);
         const user = await prisma.user.create({

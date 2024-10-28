@@ -2,10 +2,10 @@ import jwt from 'jsonwebtoken';
 
 export async function POST(req) {
   try {
-    const { refreshToken } = await req.json();
-    const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET);
+    const { token } = await req.json();
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const newAccessToken = jwt.sign(
-      { userId: decoded.userId, role: decoded.role },
+      { userId: decoded.userId, name: decoded.name, role: decoded.role },
       process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );

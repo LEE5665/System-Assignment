@@ -4,7 +4,6 @@ const prisma = new PrismaClient();
 
 export async function POST(req) {
     try {
-        // 요청 본문에서 studentId와 sectionId를 가져옵니다.
         const { studentId, sectionId } = await req.json();
 
         // 필수 데이터 유효성 검사
@@ -15,43 +14,47 @@ export async function POST(req) {
             );
         }
 
-        // 섹션 조회: minhour와 maxhour 값을 가져옵니다.
-        const section = await prisma.section.findUnique({
-            where: { id: sectionId },
-            select: { minhour: true, maxhour: true }
+        // 섹션 존재 여부 확인
+        const sectionExists = await prisma.section.findUnique({
+            where: { id: sectionId }
         });
 
-        if (!section) {
+        if (!sectionExists) {
             return new Response(
                 JSON.stringify({ error: '섹션을 찾을 수 없습니다.' }),
                 { status: 404 }
             );
         }
 
-        // 주차별, 교시별 출석 데이터 생성
-        const attendanceEntries = [];
-        const totalWeeks = 15; // 주차 수
-
-        for (let week = 1; week <= totalWeeks; week++) {
-            for (let period = section.minhour; period <= section.maxhour; period++) {
-                attendanceEntries.push({
-                    userId: studentId,
-                    sectionId: sectionId,
-                    date: new Date(), // 날짜는 일단 그냥 현재날짜 지울수도
-                    week: week,
-                    period: period,
-                    status: 'zero',
-                });
+        // 학생이 섹션에 이미 연결되어 있는지 확인
+        const isAlreadyEnrolled = await prisma.section.findFirst({
+            where: {
+                id: sectionId,
+                students: {
+                    some: { Number: studentId }
+                }
             }
+        });
+
+        if (isAlreadyEnrolled) {
+            return new Response(
+                JSON.stringify({ message: '학생이 이미 섹션에 등록되어 있습니다.' }),
+                { status: 400 }
+            );
         }
 
-        // 출석 데이터를 일괄 생성
-        await prisma.attendance.createMany({
-            data: attendanceEntries
+        // 섹션에 학생 추가
+        await prisma.section.update({
+            where: { id: sectionId },
+            data: {
+                students: {
+                    connect: { Number: studentId }
+                }
+            }
         });
 
         return new Response(
-            JSON.stringify({ message: '학생이 섹션에 성공적으로 추가되었으며, 출석 데이터가 생성되었습니다.' }),
+            JSON.stringify({ message: '학생이 섹션에 성공적으로 추가되었습니다.' }),
             { status: 200 }
         );
     } catch (error) {

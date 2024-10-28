@@ -1,5 +1,5 @@
-import AttendanceTable from './../../../../Component/교수/대시보드/디테일/AttendanceTable';
-import { studentData, subjectData } from './../../../../temp/temp.data';
+import AttendanceTable from '../../../../Component/교수/대시보드/디테일/AttendanceTable';
+import { studentData, subjectData } from '../../../../temp/temp.data';
 
 export async function generateMetadata({ params: { id } }) {
   return {
@@ -15,6 +15,9 @@ async function SaveInfo(id, statuses) {
 }
 
 export default async function Page({ params: { id } }) {
+
+
+  
   const weekNumber = Math.floor(Math.random() * 15) + 1;
   const data = studentData;
   const handleSaveInfo = async (statuses) => {

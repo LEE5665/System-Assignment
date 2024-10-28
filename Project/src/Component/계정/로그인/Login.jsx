@@ -19,6 +19,12 @@ export default function LoginComponent({ login }) {
       setError('아이디, 비밀번호가 없습니다.');
       return;
     }
+    if (!id == 'admin') {
+      if ((isStudent && id.length !== 6) || (!isStudent && id.length !== 3)) {
+        setError(isStudent ? '학생 ID는 6글자여야 합니다.' : '교수 ID는 3글자여야 합니다.');
+        return;
+      }
+    }
     try {
       // 서버로 로그인 요청을 보냅니다
       const response = await axios.post('/api/auth/login', {

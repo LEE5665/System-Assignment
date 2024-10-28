@@ -16,7 +16,7 @@ export default function DashBoard({ data }) {
   async function validateToken(accessToken) {
     try {
       const response = await axios.post(
-        `/api/auth/verifyDateToken`,
+        `/api/auth/verifyDataToken`,
         { token: accessToken },
         {
           headers: {

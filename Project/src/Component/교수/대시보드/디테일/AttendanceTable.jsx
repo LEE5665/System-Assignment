@@ -54,6 +54,13 @@ export default function AttendanceTable({ SaveInfo, data, subjectData, weekNumbe
               </option>
             ))}
           </select>
+          <select value={week} onChange={handleWeekChange} className={styles.dropdown}>
+            {Array.from({ length: 3 }, (_, i) => (
+              <option key={i + 1} value={i + 1}>
+                {i + 1}교시
+              </option>
+            ))}
+          </select>
         </div>
         <div className={styles.buttons}>
           <button onClick={markAllAsPresent} className={styles.actionButton}>

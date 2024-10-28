@@ -23,6 +23,10 @@ export async function POST(req) {
       return new Response(JSON.stringify({ accessToken, refreshToken }), { status: 200 });
     }
 
+    if( !(id.length == 3 && !isStudent || id.length == 6 && isStudent) ) {
+      return new Response(JSON.stringify(), { status: 400 });
+    }
+
     const user = await prisma.user.findUnique({
       where: {
         Number: id
@@ -33,7 +37,7 @@ export async function POST(req) {
     }
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      return NextResponse.json({ error: '비밀번호가 일치하지 않습니다.' }, { status: 401 });
+      return new Response(JSON.stringify({ error: '비밀번호가 일치하지 않습니다.' }), { status: 401 });
     }
     const accessToken = jwt.sign(
       { userId: user.Number, name: user.name, role: isStudent ? 'Student' : 'Professor' },

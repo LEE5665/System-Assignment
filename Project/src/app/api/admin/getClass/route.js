@@ -15,7 +15,6 @@ export async function GET(req) {
             where: { courseId },
             include: {
                 course: true,
-                instructor: true,
             },
         });
         return new Response(JSON.stringify({ sections }), { status: 200 });

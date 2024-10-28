@@ -6,7 +6,7 @@ async function refreshAccessToken(refreshToken) {
   try {
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/api/auth/verifyToken`,
-      { refreshToken },
+      { token: refreshToken },
       {
         headers: {
           'Content-Type': 'application/json',
@@ -26,7 +26,7 @@ async function refreshAccessToken(refreshToken) {
 async function validateToken(accessToken) {
   try {
     const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/auth/verifyDateToken`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/auth/verifyDataToken`,
       { token: accessToken },
       {
         headers: {
@@ -62,14 +62,15 @@ export async function middleware(request) {
     if (!PUBLIC_ROUTES.includes(request.nextUrl.pathname) && !accessToken && refreshToken) {
       const newAccessToken = await refreshAccessToken(refreshToken);
       if (newAccessToken) {
-        Cookies.set('accessToken', newAccessToken, {
-          httpOnly: true,
+        const response = NextResponse.next();
+        response.cookies.set('accessToken', newAccessToken, {
+          httpOnly: false,
           secure: true,
           path: '/',
           sameSite: 'lax',
-          expires: 1 / 24,
+          maxAge: 3600,
         });
-        return NextResponse.next();
+        return response;
       } else {
         return NextResponse.redirect(new URL('/Register', request.url));
       }
@@ -91,7 +92,7 @@ export async function middleware(request) {
 }
 
 export const config = {
-  matcher: ['/((?!api/auth|api/admin|_next/static|_next/image|favicon.ico).*)'],
+  matcher: ['/((?!api/auth|api/admin|api/Professor|api/Student|_next/static|_next/image|favicon.ico).*)'],
 };
 
 export const ROOT = '/';

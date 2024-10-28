@@ -20,7 +20,6 @@ CREATE TABLE `Section` (
     `minhour` INTEGER NOT NULL,
     `maxhour` INTEGER NOT NULL,
     `courseId` VARCHAR(191) NOT NULL,
-    `instructorId` VARCHAR(191) NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -47,15 +46,21 @@ CREATE TABLE `Attendance` (
     `period` INTEGER NOT NULL,
     `status` VARCHAR(191) NOT NULL,
 
-    UNIQUE INDEX `Attendance_userId_sectionId_date_week_period_key`(`userId`, `sectionId`, `date`, `week`, `period`),
+    UNIQUE INDEX `Attendance_userId_sectionId_week_period_key`(`userId`, `sectionId`, `week`, `period`),
     PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `_UserSections` (
+    `A` VARCHAR(191) NOT NULL,
+    `B` VARCHAR(191) NOT NULL,
+
+    UNIQUE INDEX `_UserSections_AB_unique`(`A`, `B`),
+    INDEX `_UserSections_B_index`(`B`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
 ALTER TABLE `Section` ADD CONSTRAINT `Section_courseId_fkey` FOREIGN KEY (`courseId`) REFERENCES `Course`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `Section` ADD CONSTRAINT `Section_instructorId_fkey` FOREIGN KEY (`instructorId`) REFERENCES `User`(`Number`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Course` ADD CONSTRAINT `Course_instructorId_fkey` FOREIGN KEY (`instructorId`) REFERENCES `User`(`Number`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -65,3 +70,9 @@ ALTER TABLE `Attendance` ADD CONSTRAINT `Attendance_userId_fkey` FOREIGN KEY (`u
 
 -- AddForeignKey
 ALTER TABLE `Attendance` ADD CONSTRAINT `Attendance_sectionId_fkey` FOREIGN KEY (`sectionId`) REFERENCES `Section`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_UserSections` ADD CONSTRAINT `_UserSections_A_fkey` FOREIGN KEY (`A`) REFERENCES `Section`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_UserSections` ADD CONSTRAINT `_UserSections_B_fkey` FOREIGN KEY (`B`) REFERENCES `User`(`Number`) ON DELETE CASCADE ON UPDATE CASCADE;
