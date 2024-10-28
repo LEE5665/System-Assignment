@@ -5,7 +5,6 @@ const prisma = new PrismaClient();
 export async function GET(req) {
     const { searchParams } = new URL(req.url);
     const courseId = searchParams.get("courseId");
-    console.log(courseId);
 
     if (!courseId) {
         return new Response(JSON.stringify({ error: 'courseId가 필요합니다.' }), { status: 400 });

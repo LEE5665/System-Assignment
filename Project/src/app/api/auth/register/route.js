@@ -20,12 +20,12 @@ export async function POST(req) {
             }
         });
         const accessToken = jwt.sign(
-            { userId: user.id, name: user.name, role: isStudent ? 'Student' : 'Professor' },
+            { userId: user.Number, name: user.name, role: isStudent ? 'Student' : 'Professor' },
             process.env.JWT_SECRET,
             { expiresIn: '1h' }
         );
         const refreshToken = jwt.sign(
-            { userId: user.id, name: user.name, role: isStudent ? 'Student' : 'Professor' },
+            { userId: user.Number, name: user.name, role: isStudent ? 'Student' : 'Professor' },
             process.env.JWT_SECRET,
             { expiresIn: '7d' }
         );

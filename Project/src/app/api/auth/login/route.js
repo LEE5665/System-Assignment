@@ -36,12 +36,12 @@ export async function POST(req) {
       return NextResponse.json({ error: '비밀번호가 일치하지 않습니다.' }, { status: 401 });
     }
     const accessToken = jwt.sign(
-      { userId: user.id, name: user.name, role: isStudent ? 'Student' : 'Professor' },
+      { userId: user.Number, name: user.name, role: isStudent ? 'Student' : 'Professor' },
       process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
     const refreshToken = jwt.sign(
-      { userId: user.id, name: user.name, role: isStudent ? 'Student' : 'Professor' },
+      { userId: user.Number, name: user.name, role: isStudent ? 'Student' : 'Professor' },
       process.env.JWT_SECRET,
       { expiresIn: '7d' }
     );

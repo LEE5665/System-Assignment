@@ -9,7 +9,6 @@ export async function POST(req) {
       process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
-
     return new Response(JSON.stringify({ accessToken: newAccessToken }), { status: 200 });
   } catch (error) {
     console.error('유효하지 않은 토큰:', error);

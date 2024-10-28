@@ -20,5 +20,5 @@ async function getData() {
 
 export default async function Page() {
   // const data = await getData();
-  return <DashBoard data={subjectData} />;
+  return <DashBoard/>;
 }
