@@ -8,6 +8,21 @@ export async function POST(req) {
   try {
     const { id, password, isStudent } = await req.json();
 
+    //관리자
+    if(id == 'admin' && password == '123') {
+      const accessToken = jwt.sign(
+        { userId: 'admin', name: '관리자', role: 'Admin' },
+        process.env.JWT_SECRET,
+        { expiresIn: '1h' }
+      );
+      const refreshToken = jwt.sign(
+        { userId: 'admin', name: '관리자', role: 'Admin' },
+        process.env.JWT_SECRET,
+        { expiresIn: '7d' }
+      );
+      return new Response(JSON.stringify({ accessToken, refreshToken }), { status: 200 });
+    }
+
     const user = await prisma.user.findUnique({
       where: {
         Number: id

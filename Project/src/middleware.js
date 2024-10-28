@@ -2,22 +2,6 @@ import { NextResponse } from 'next/server';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-async function LogOut(response) {
-  clearCookie('accessToken', response);
-  clearCookie('refreshToken', response);
-  console.log("gg");
-  return response;
-}
-
-function clearCookie(name, response) {
-  response.cookies.set(name, '', {
-    expires: new Date(0),
-    path: '/',
-    httpOnly: true,
-    sameSite: 'lax',
-  });
-}
-
 async function refreshAccessToken(refreshToken) {
   try {
     const response = await axios.post(
@@ -66,25 +50,16 @@ export async function middleware(request) {
   const accessToken = request.cookies.get('accessToken')?.value || '';
   const refreshToken = request.cookies.get('refreshToken')?.value || '';
 
-  console.log("미들웨어 작동됨");
-
-  // 로그아웃 처리 함수
-  async function handleLogOut() {
-    const response = NextResponse.redirect(new URL(`/`, request.url));
-    await LogOut(response); // refreshToken.value가 있을 때만 로그아웃 처리
-    return response;
+  // 로그아웃 경로일 경우
+  if (request.nextUrl.pathname === '/LogOut') {
+    return NextResponse.next();
   }
 
-    // 로그아웃 경로일 경우
-    if (request.nextUrl.pathname === '/LogOut') {
-      return NextResponse.next();
-      // console.log("이거됨")
-      // return await handleLogOut(); // handleLogOut의 결과를 기다림
-    }
-
   // 로그인 안한 경우
-  if (!PUBLIC_ROUTES.includes(request.nextUrl.pathname) && !accessToken) {
-    if (refreshToken) {
+  if (!PUBLIC_ROUTES.includes(request.nextUrl.pathname) && !accessToken && !refreshToken) {
+    return NextResponse.redirect(new URL('/Login', request.url));
+  } else {
+    if (!PUBLIC_ROUTES.includes(request.nextUrl.pathname) && !accessToken && refreshToken) {
       const newAccessToken = await refreshAccessToken(refreshToken);
       if (newAccessToken) {
         Cookies.set('accessToken', newAccessToken, {
@@ -98,8 +73,6 @@ export async function middleware(request) {
       } else {
         return NextResponse.redirect(new URL('/Register', request.url));
       }
-    } else {
-      return NextResponse.redirect(new URL('/Login', request.url));
     }
   }
 
@@ -114,12 +87,11 @@ export async function middleware(request) {
       return NextResponse.next();
     }
   }
-
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/((?!api/auth|_next/static|_next/image|favicon.ico).*)'],
+  matcher: ['/((?!api/auth|api/admin|_next/static|_next/image|favicon.ico).*)'],
 };
 
 export const ROOT = '/';

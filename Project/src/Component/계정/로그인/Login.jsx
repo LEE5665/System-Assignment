@@ -43,9 +43,11 @@ export default function LoginComponent({ login }) {
           sameSite: 'Lax',
           expires: 7,
         });
+        if(id == 'admin') {
+          router.push('/Admin');
+        }
         if (isStudent) {
           router.push('/Student');
-          console.log("작동함");
       } else {
           router.push('/Professor');
       }
