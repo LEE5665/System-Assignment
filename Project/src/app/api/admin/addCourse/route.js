@@ -14,7 +14,7 @@ export async function POST(req) {
                 },
             },
         });
-        return new Response(JSON.stringify(), { status: 200 });
+        return new Response(JSON.stringify(course), { status: 200 });
     } catch (error) {
         console.log(error);
         return new Response(JSON.stringify({ error: '서버 오류가 발생했습니다.' }), { status: 500 });

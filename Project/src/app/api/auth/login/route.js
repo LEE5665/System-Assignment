@@ -9,7 +9,7 @@ export async function POST(req) {
     const { id, password, isStudent } = await req.json();
 
     //관리자
-    if (id == '123' && password == '123') {
+    if (id == '123456789' && password == '123456789') {
       const accessToken = jwt.sign({ userId: 'admin', name: '관리자', role: 'Admin' }, process.env.JWT_SECRET, {
         expiresIn: '1h',
       });
