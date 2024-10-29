@@ -2,7 +2,12 @@
 
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 import styles from './AdminPage.module.css';
+
+// SweetAlert2 + React 설정
+const MySwal = withReactContent(Swal);
 
 // 과목 추가 컴포넌트
 function CourseForm({
@@ -13,8 +18,6 @@ function CourseForm({
   instructorId,
   setInstructorId,
   handleCourseSubmit,
-  error,
-  success,
 }) {
   return (
     <form onSubmit={handleCourseSubmit} className={styles.form}>
@@ -34,8 +37,6 @@ function CourseForm({
       <button type="submit" className={styles.submitButton}>
         과목 추가
       </button>
-      {error && <p className={styles.error}>{error}</p>}
-      {success && <p className={styles.success}>{success}</p>}
     </form>
   );
 }
@@ -99,8 +100,6 @@ export default function AddCoursePage() {
   const [courseName, setCourseName] = useState('');
   const [courseCode, setCourseCode] = useState('');
   const [instructorId, setInstructorId] = useState('');
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [sections, setSections] = useState([]);
@@ -118,7 +117,11 @@ export default function AddCoursePage() {
         const response = await axios.get('/api/admin/getCourse');
         setCourses(response.data.courses);
       } catch (error) {
-        setError('과목을 불러오는 중 오류가 발생했습니다.');
+        MySwal.fire({
+          icon: 'error',
+          title: '오류',
+          text: '과목을 불러오는 중 오류가 발생했습니다.',
+        });
       }
     }
     fetchCourses();
@@ -129,17 +132,24 @@ export default function AddCoursePage() {
       const response = await axios.get(`/api/admin/getClass?courseId=${courseId}`);
       setSections(response.data.sections);
     } catch (error) {
-      setError('반을 불러오는 중 오류가 발생했습니다.');
+      MySwal.fire({
+        icon: 'error',
+        title: '오류',
+        text: '반을 불러오는 중 오류가 발생했습니다.',
+      });
     }
   };
 
   const handleCourseSubmit = async (e) => {
     e.preventDefault();
     if (!courseName || !courseCode || !instructorId) {
-      setError('모든 필드를 입력해주세요.');
+      MySwal.fire({
+        icon: 'error',
+        title: '오류',
+        text: '모든 필드를 입력해주세요.',
+      });
       return;
     }
-
     try {
       const response = await axios.post('/api/admin/addCourse', {
         courseName,
@@ -147,21 +157,33 @@ export default function AddCoursePage() {
         instructorId,
       });
       if (response.status === 200) {
-        setSuccess('과목이 추가되었습니다.');
+        MySwal.fire({
+          icon: 'success',
+          title: '성공',
+          text: '과목이 추가되었습니다.',
+        });
         setCourses([...courses, response.data]);
         setCourseName('');
         setCourseCode('');
         setInstructorId('');
       }
     } catch (error) {
-      setError('과목 추가 중 오류가 발생했습니다.');
+      MySwal.fire({
+        icon: 'error',
+        title: '오류',
+        text: '과목 추가 중 오류가 발생했습니다.',
+      });
     }
   };
 
   const handleSectionSubmit = async (e) => {
     e.preventDefault();
     if (!grade || !className || !minhour || !maxhour || !selectedCourse) {
-      setError('모든 필드를 입력해주세요.');
+      MySwal.fire({
+        icon: 'error',
+        title: '오류',
+        text: '모든 필드를 입력해주세요.',
+      });
       return;
     }
 
@@ -174,7 +196,11 @@ export default function AddCoursePage() {
         maxhour,
       });
       if (response.status === 200) {
-        setSuccess('반이 추가되었습니다.');
+        MySwal.fire({
+          icon: 'success',
+          title: '성공',
+          text: '반이 추가되었습니다.',
+        });
         setSections([...sections, response.data]);
         setGrade('');
         setClassName('');
@@ -182,27 +208,44 @@ export default function AddCoursePage() {
         setMaxhour('');
       }
     } catch (error) {
-      setError('반 추가 중 오류가 발생했습니다.');
+      MySwal.fire({
+        icon: 'error',
+        title: '오류',
+        text: '반 추가 중 오류가 발생했습니다.',
+      });
     }
   };
 
   const handleStudentSubmit = async (e) => {
     e.preventDefault();
     if (!studentId || !selectedSection) {
-      setError('모든 필드를 입력해주세요.');
+      MySwal.fire({
+        icon: 'error',
+        title: '오류',
+        text: '모든 필드를 입력해주세요.',
+      });
       return;
     }
+
     try {
       const response = await axios.post('/api/admin/addStudent', {
         sectionId: selectedSection.id,
         studentId,
       });
       if (response.status === 200) {
-        setSuccess('학생이 추가되었습니다.');
+        MySwal.fire({
+          icon: 'success',
+          title: '성공',
+          text: '학생이 추가되었습니다.',
+        });
         setStudentId('');
       }
     } catch (error) {
-      setError('학생 추가 중 오류가 발생했습니다.');
+      MySwal.fire({
+        icon: 'error',
+        title: '오류',
+        text: '학생 추가 중 오류가 발생했습니다.',
+      });
     }
   };
 
@@ -216,8 +259,6 @@ export default function AddCoursePage() {
         instructorId={instructorId}
         setInstructorId={setInstructorId}
         handleCourseSubmit={handleCourseSubmit}
-        error={error}
-        success={success}
       />
 
       <h3>기존 과목 목록</h3>
