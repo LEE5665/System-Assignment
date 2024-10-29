@@ -89,19 +89,38 @@ export default function LoginComponent({ login }) {
           expires: 7,
         });
 
-        // 로그인 성공 메시지 표시
+        /// 로그인 성공 메시지 표시
         MySwal.fire({
           icon: 'success',
           title: '로그인 성공',
           text: '성공적으로 로그인되었습니다.',
-        }).then(() => {
-          if (id === 'admin') {
-            router.push('/Admin');
-          } else if (isStudent) {
-            router.push('/Student');
-          } else {
-            router.push('/Professor');
-          }
+          showConfirmButton: false, // 확인 버튼 숨기기
+          allowOutsideClick: false, // 모달 외부 클릭 방지
+          allowEscapeKey: false, // ESC 키 방지
+          timer: 1500, // 1.5초 동안 표시
+          didClose: () => {
+            const accessToken = Cookies.get('accessToken');
+            const refreshToken = Cookies.get('refreshToken');
+
+            if (accessToken && refreshToken) {
+              if (id === 'admin') {
+                router.push('/Admin');
+              } else if (isStudent) {
+                router.push('/Student');
+              } else {
+                router.push('/Professor');
+              }
+            } else {
+              // 토큰이 없으면 경고 모달 표시
+              MySwal.fire({
+                icon: 'warning',
+                title: '로그인 정보 없음',
+                text: '로그인 정보를 찾을 수 없습니다.',
+                timer: 1500, // 1.5초 후 자동 닫힘
+                showConfirmButton: false,
+              });
+            }
+          },
         });
       } else {
         MySwal.fire({
