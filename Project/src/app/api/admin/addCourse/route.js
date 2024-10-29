@@ -1,22 +1,26 @@
-import { PrismaClient } from '@prisma/client';
+import { NextResponse } from 'next/server';
+import prisma from '../../../../lib/prisma';
 
-const prisma = new PrismaClient();
-
-export async function POST(req) {
+export async function POST(request) {
   try {
-    const { courseName, courseCode, instructorId } = await req.json();
+    const { courseName, courseCode, instructorId } = await request.json();
+
+    // 과목을 추가할 때, instructorId로 교수와 연결
     const course = await prisma.course.create({
       data: {
         courseName,
         courseCode,
         instructor: {
-          connect: { Number: instructorId },
+          connect: {
+            Number: instructorId, // 교수의 Number 필드를 통해 관계 연결
+          },
         },
       },
     });
-    return new Response(JSON.stringify(course), { status: 200 });
+
+    return NextResponse.json(course, { status: 200 });
   } catch (error) {
-    console.log(error);
-    return new Response(JSON.stringify({ error: '서버 오류가 발생했습니다.' }), { status: 500 });
+    console.error('과목 추가 중 오류 발생:', error);
+    return NextResponse.json({ error: '과목 추가 중 오류 발생' }, { status: 500 });
   }
 }

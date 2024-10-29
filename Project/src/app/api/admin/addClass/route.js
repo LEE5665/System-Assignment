@@ -1,27 +1,27 @@
-import { PrismaClient } from "@prisma/client";
+import { NextResponse } from 'next/server';
+import prisma from '../../../../lib/prisma';
 
-const prisma = new PrismaClient();
+export async function POST(request) {
+  const { courseId, grade, className, minhour, maxhour } = await request.json();
 
-export async function POST(req) {
-    try {
-        const { courseId, grade, className, minhour, maxhour } = await req.json();
-        if (!courseId || !grade || !className || !minhour || !maxhour) {
-            return res.status(400).json({ error: '모든 필드를 입력해주세요.' });
-        }
-        const section = await prisma.section.create({
-            data: {
-                grade,
-                class: className,
-                minhour: parseInt(minhour),
-                maxhour: parseInt(maxhour),
-                course: {
-                    connect: { id: courseId },
-                },
-            },
-        });
-        return new Response(JSON.stringify(section), { status: 200 });
-    } catch (error) {
-        console.log(error);
-        return new Response(JSON.stringify({ error: '반 생성 중 오류가 발생했습니다.' }), { status: 500 });
-    }
+  if (!courseId || !grade || !className || minhour == null || maxhour == null) {
+    return NextResponse.json({ error: '모든 필드를 입력해주세요.' }, { status: 400 });
+  }
+
+  try {
+    const section = await prisma.section.create({
+      data: {
+        courseId,
+        grade,
+        class: className,
+        minhour: parseInt(minhour, 10),
+        maxhour: parseInt(maxhour, 10),
+      },
+    });
+
+    return NextResponse.json(section, { status: 200 });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: '반 추가 중 오류가 발생했습니다.' }, { status: 500 });
+  }
 }

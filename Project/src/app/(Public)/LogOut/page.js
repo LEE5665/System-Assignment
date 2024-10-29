@@ -27,14 +27,12 @@ export default function Logout() {
     Cookies.remove('accessToken', { path: '/' });
     Cookies.remove('refreshToken', { path: '/' });
 
-    // 쿠키가 삭제되었는지 확인
-    const checkCookies = setInterval(() => {
+    // 0.5초 후 쿠키가 삭제되었는지 확인
+    setTimeout(() => {
       const accessToken = Cookies.get('accessToken');
       const refreshToken = Cookies.get('refreshToken');
 
       if (!accessToken && !refreshToken) {
-        clearInterval(checkCookies); // 확인 타이머 종료
-
         // SweetAlert2 모달 업데이트 (로그아웃 성공 메시지)
         MySwal.fire({
           icon: 'success',
@@ -43,10 +41,18 @@ export default function Logout() {
           showConfirmButton: false, // 확인 버튼 숨기기
           timer: 1000, // 1초 후 모달 자동 닫기
         }).then(() => {
-          router.push('/'); // 홈 페이지로 이동
+          router.push('/Login'); // 홈 페이지로 이동
+        });
+      } else {
+        // 쿠키가 여전히 남아있을 때 추가 처리가 필요할 수 있습니다.
+        MySwal.fire({
+          icon: 'error',
+          title: '로그아웃 실패',
+          text: '쿠키 삭제에 실패했습니다. 다시 시도해주세요.',
+          showConfirmButton: true,
         });
       }
-    }, 500); // 0.5초 간격으로 쿠키 확인
+    }, 500); // 0.5초 대기 후 확인
   }, [router]);
 
   return null;
