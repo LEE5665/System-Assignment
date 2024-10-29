@@ -4,17 +4,23 @@
   align-items: center;
   justify-content: center;
   padding: 2rem;
-  padding-top: 10%;
+  padding-top: 5%;
 }
 
 .form {
   background-color: white;
   padding: 2rem;
   border-radius: 10px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   max-width: 400px;
   width: 100%;
+}
+
+.title {
+  text-align: center;
   padding-bottom: 1rem;
+  font-size: 2rem;
+  font-weight: bold;
 }
 
 .formGroup {
@@ -24,7 +30,7 @@
 }
 
 .label {
-  flex: 0 0 80px;
+  flex: 0 0 100px;
   font-size: 1rem;
   text-align: right;
   padding-right: 1rem;
@@ -76,30 +82,15 @@
   background-color: #005bb5;
 }
 
+.button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
 .error {
-  padding-bottom: 0.5rem;
+  padding-top: 1rem;
   color: red;
   text-align: center;
   font-size: 0.875rem;
-}
-
-.title {
-  text-align: center;
-  padding-bottom: 1rem;
-  font-size: 2rem;
-  font-weight: bold;
-}
-.registerLink {
-  text-align: right;
-  text-decoration: none;
-  display: flex;
-  padding-top: 1rem;
-  justify-content: flex-end;
-  color: #0070f3;
-}
-.registerLink:visited {
-  color: #0070f3;
-}
-.registerLink:hover {
-  color: #005bb5;
+  margin-bottom: -1rem;
 }

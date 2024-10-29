@@ -1,27 +1,118 @@
 .formContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: #f9f9f9;
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: rgb(222, 222, 222);
+  border-radius: 10px;
+  box-shadow: 0 12px 18px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin-top: 5%;
+}
+
+.headingLarge {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.headingMedium {
+  font-size: 20px;
+  margin-top: 40px;
+  margin-bottom: 15px;
+  color: #333;
 }
 
 .form {
-    width: 400px;
-    padding: 20px;
-    border-radius: 8px;
-    background-color: #ffffff;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-    font-family: Arial, sans-serif;
-}
-.error {
-    color: #ff4d4d;
-    text-align: center;
-    margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
 }
 
-.success {
-    color: #28a745;
-    text-align: center;
-    margin-top: 10px;
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.inputField {
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: border-color 0.3s ease;
+}
+
+.inputFieldFocus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.submitButton {
+  padding: 10px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submitButtonHover {
+  background-color: #0056b3;
+}
+
+.errorMessage {
+  color: #ff4d4d;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.successMessage {
+  color: #28a745;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.courseList,
+.sectionList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.courseItem,
+.sectionItem {
+  padding: 10px;
+  font-size: 16px;
+  background-color: #fff;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.courseItemHover,
+.sectionItemHover {
+  background-color: #f1f1f1;
+}
+
+.courseItemFlex,
+.sectionItemFlex {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
 }

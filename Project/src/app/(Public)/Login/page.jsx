@@ -1,6 +1,8 @@
 import { cookies } from 'next/headers';
 import LoginComponent from './../../../Component/계정/로그인/Login';
-
+export const metadata = {
+  title: '로그인',
+};
 async function login({ id, password }) {
   'use server';
   try {

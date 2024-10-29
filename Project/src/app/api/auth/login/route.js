@@ -1,5 +1,5 @@
-import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcryptjs"
+import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 const prisma = new PrismaClient();
@@ -9,28 +9,24 @@ export async function POST(req) {
     const { id, password, isStudent } = await req.json();
 
     //관리자
-    if(id == 'admin' && password == '123') {
-      const accessToken = jwt.sign(
-        { userId: 'admin', name: '관리자', role: 'Admin' },
-        process.env.JWT_SECRET,
-        { expiresIn: '1h' }
-      );
-      const refreshToken = jwt.sign(
-        { userId: 'admin', name: '관리자', role: 'Admin' },
-        process.env.JWT_SECRET,
-        { expiresIn: '7d' }
-      );
+    if (id == '123' && password == '123') {
+      const accessToken = jwt.sign({ userId: 'admin', name: '관리자', role: 'Admin' }, process.env.JWT_SECRET, {
+        expiresIn: '1h',
+      });
+      const refreshToken = jwt.sign({ userId: 'admin', name: '관리자', role: 'Admin' }, process.env.JWT_SECRET, {
+        expiresIn: '7d',
+      });
       return new Response(JSON.stringify({ accessToken, refreshToken }), { status: 200 });
     }
 
-    if( !(id.length == 3 && !isStudent || id.length == 6 && isStudent) ) {
+    if (!((id.length == 6 && !isStudent) || (id.length == 9 && isStudent))) {
       return new Response(JSON.stringify(), { status: 400 });
     }
 
     const user = await prisma.user.findUnique({
       where: {
-        Number: id
-      }
+        Number: id,
+      },
     });
     if (!user) {
       return new Response(JSON.stringify({ error: '사용자를 찾을 수 없습니다.' }), { status: 401 });
