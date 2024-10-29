@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import Loading from './../../../app/Loading';
 import styles from './Register.module.css';
 
 const MySwal = withReactContent(Swal);
@@ -113,6 +112,16 @@ export default function RegisterPage() {
 
     setIsLoading(true); // 로딩 시작
 
+    // 로딩 모달 표시
+    MySwal.fire({
+      title: '회원가입 중...',
+      text: '잠시만 기다려 주세요.',
+      allowOutsideClick: false,
+      didOpen: () => {
+        MySwal.showLoading();
+      },
+    });
+
     try {
       const response = await axios.post('/api/auth/register', {
         id,
@@ -140,6 +149,9 @@ export default function RegisterPage() {
           sameSite: 'lax',
         });
 
+        // 로딩 모달 닫기
+        MySwal.close();
+
         // 성공 메시지 표시
         await MySwal.fire({
           icon: 'success',
@@ -163,6 +175,9 @@ export default function RegisterPage() {
         setEmail('');
       }
     } catch (error) {
+      // 로딩 모달 닫기
+      MySwal.close();
+
       // 실패 시 에러 메시지 표시
       const errorMessage = error.response?.data?.message || '회원가입 중 오류가 발생했습니다. 다시 시도해주세요.';
       MySwal.fire({
@@ -177,7 +192,6 @@ export default function RegisterPage() {
 
   return (
     <div className={styles.formContainer}>
-      {isLoading && <Loading />} {/* Loading 컴포넌트 표시 */}
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.title}>회원가입</div>
 
