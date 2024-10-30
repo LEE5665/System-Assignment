@@ -1,24 +1,25 @@
-import { NextResponse } from 'next/server';
-import prisma from '../../../../lib/prisma';
+import { PrismaClient } from "@prisma/client";
 
-export async function GET(request) {
-  const { searchParams } = new URL(request.url);
-  const courseId = searchParams.get('courseId');
+const prisma = new PrismaClient();
 
-  if (!courseId) {
-    return NextResponse.json({ error: 'courseId가 필요합니다.' }, { status: 400 });
-  }
+export async function GET(req) {
+    const { searchParams } = new URL(req.url);
+    const courseId = searchParams.get("courseId");
 
-  try {
-    const sections = await prisma.section.findMany({
-      where: {
-        courseId,
-      },
-    });
+    if (!courseId) {
+        return new Response(JSON.stringify({ error: 'courseId가 필요합니다.' }), { status: 400 });
+    }
 
-    return NextResponse.json({ sections }, { status: 200 });
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json({ error: '반을 불러오는 중 오류가 발생했습니다.' }, { status: 500 });
-  }
+    try {
+        const sections = await prisma.section.findMany({
+            where: { courseId },
+            include: {
+                course: true,
+            },
+        });
+        return new Response(JSON.stringify({ sections }), { status: 200 });
+    } catch (error) {
+        console.error(error);
+        return new Response(JSON.stringify({ error: '서버 오류가 발생했습니다.' }), { status: 500 });
+    }
 }
