@@ -1,21 +1,23 @@
 import { NextResponse } from 'next/server';
-import axios from 'axios';
-import Cookies from 'js-cookie';
+// axios 대신 fetch를 사용하므로 axios와 js-cookie는 제거했습니다.
 
+// Refresh Access Token 함수 수정
 async function refreshAccessToken(refreshToken) {
   try {
-    const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/auth/verifyToken`,
-      { token: refreshToken },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-    if (response.status === 200) {
-      return response.data.accessToken;
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/verifyToken`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ token: refreshToken }),
+    });
+
+    if (response.ok) {
+      // response.status === 200과 동일
+      const data = await response.json();
+      return data.accessToken;
     } else {
+      console.error('Failed to refresh access token:', response.statusText);
       return null;
     }
   } catch (error) {
@@ -23,21 +25,23 @@ async function refreshAccessToken(refreshToken) {
     return null;
   }
 }
+
+// Validate Token 함수 수정
 async function validateToken(accessToken) {
   try {
-    const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/auth/verifyDataToken`,
-      { token: accessToken },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/verifyDataToken`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ token: accessToken }),
+    });
 
-    if (response.status === 200) {
-      return response.data.decoded;
+    if (response.ok) {
+      const data = await response.json();
+      return data.decoded;
     } else {
+      console.error('Failed to validate access token:', response.statusText);
       return null;
     }
   } catch (error) {
@@ -46,6 +50,7 @@ async function validateToken(accessToken) {
   }
 }
 
+// Middleware 함수 수정
 export async function middleware(request) {
   const accessToken = request.cookies.get('accessToken')?.value || '';
   const refreshToken = request.cookies.get('refreshToken')?.value || '';
@@ -65,7 +70,6 @@ export async function middleware(request) {
         const response = NextResponse.next();
         response.cookies.set('accessToken', newAccessToken, {
           httpOnly: false,
-          secure: true,
           path: '/',
           sameSite: 'lax',
           maxAge: 3600,
