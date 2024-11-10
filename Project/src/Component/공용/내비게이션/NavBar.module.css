@@ -26,10 +26,15 @@
 .mypageButtons {
   background: none;
   border: none;
-  cursor: pointer;
   margin-left: 10px;
 }
 
 .mypageButton {
   margin-left: 1rem;
+  cursor: pointer;
+}
+
+.name{
+  font-size: 2.3rem;
+  vertical-align: top;
 }

@@ -1,5 +1,7 @@
+'use server';
+import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 
-export async function getTokenId() {
-  return JSON.parse(cookies().get('accessToken').value).id;
+export default async function getTokenId() {
+  return jwt.verify(cookies().get('accessToken').value, process.env.JWT_SECRET);
 }

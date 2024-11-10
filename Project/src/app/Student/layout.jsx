@@ -6,9 +6,10 @@ export const metadata = {
 
 export default function Layout({ children }) {
   return (
-    <div className="back">
+    <div className='back'>
       <NavBar type={'Student'} />
-      <div className="content">{children}</div>
+
+      <div className='content'>{children}</div>
     </div>
   );
 }
