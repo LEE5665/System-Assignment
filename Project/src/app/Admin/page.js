@@ -24,15 +24,15 @@ function CourseForm({
       <h2>과목 추가</h2>
       <div className={styles.inputGroup}>
         <label>과목명</label>
-        <input type='text' value={courseName} onChange={(e) => setCourseName(e.target.value)} required />
+        <input type='text' value={courseName || ''} onChange={(e) => setCourseName(e.target.value)} required />
       </div>
       <div className={styles.inputGroup}>
         <label>과목 코드</label>
-        <input type='text' value={courseCode} onChange={(e) => setCourseCode(e.target.value)} required />
+        <input type='text' value={courseCode || ''} onChange={(e) => setCourseCode(e.target.value)} required />
       </div>
       <div className={styles.inputGroup}>
         <label>교수 ID</label>
-        <input type='text' value={instructorId} onChange={(e) => setInstructorId(e.target.value)} required />
+        <input type='text' value={instructorId || ''} onChange={(e) => setInstructorId(e.target.value)} required />
       </div>
       <button type='submit' className={styles.submitButton}>
         과목 추가
@@ -58,19 +58,19 @@ function SectionForm({
       <h2>반 추가</h2>
       <div className={styles.inputGroup}>
         <label>학년</label>
-        <input type='text' value={grade} onChange={(e) => setGrade(e.target.value)} required />
+        <input type='text' value={grade || ''} onChange={(e) => setGrade(e.target.value)} required />
       </div>
       <div className={styles.inputGroup}>
         <label>반</label>
-        <input type='text' value={className} onChange={(e) => setClassName(e.target.value)} required />
+        <input type='text' value={className || ''} onChange={(e) => setClassName(e.target.value)} required />
       </div>
       <div className={styles.inputGroup}>
         <label>시작 교시</label>
-        <input type='number' value={minhour} onChange={(e) => setMinhour(e.target.value)} required />
+        <input type='number' value={minhour || ''} onChange={(e) => setMinhour(e.target.value)} required />
       </div>
       <div className={styles.inputGroup}>
         <label>종료 교시</label>
-        <input type='number' value={maxhour} onChange={(e) => setMaxhour(e.target.value)} required />
+        <input type='number' value={maxhour || ''} onChange={(e) => setMaxhour(e.target.value)} required />
       </div>
       <button type='submit' className={styles.submitButton}>
         반 추가
@@ -86,7 +86,7 @@ function StudentForm({ studentId, setStudentId, handleStudentSubmit }) {
       <h2>학생 추가</h2>
       <div className={styles.inputGroup}>
         <label>학생 ID</label>
-        <input type='text' value={studentId} onChange={(e) => setStudentId(e.target.value)} required />
+        <input type='text' value={studentId || ''} onChange={(e) => setStudentId(e.target.value)} required />
       </div>
       <button type='submit' className={styles.submitButton}>
         학생 추가
@@ -95,6 +95,7 @@ function StudentForm({ studentId, setStudentId, handleStudentSubmit }) {
   );
 }
 
+// 메인 컴포넌트
 export default function AddCoursePage() {
   const [courseName, setCourseName] = useState('');
   const [courseCode, setCourseCode] = useState('');
@@ -177,7 +178,7 @@ export default function AddCoursePage() {
 
   const handleSectionSubmit = async (e) => {
     e.preventDefault();
-    if (!grade || !className || !minhour || !maxhour || !selectedCourse) {
+    if (!grade || !className || minhour === '' || maxhour === '' || !selectedCourse) {
       MySwal.fire({
         icon: 'error',
         title: '오류',
@@ -191,8 +192,8 @@ export default function AddCoursePage() {
         courseId: selectedCourse.id,
         grade,
         className,
-        minhour,
-        maxhour,
+        minhour: Number(minhour),
+        maxhour: Number(maxhour),
       });
       if (response.status === 200) {
         MySwal.fire({
@@ -253,7 +254,7 @@ export default function AddCoursePage() {
       <CourseForm
         courseName={courseName}
         setCourseName={setCourseName}
-        courseCode={setCourseCode}
+        courseCode={courseCode}
         setCourseCode={setCourseCode}
         instructorId={instructorId}
         setInstructorId={setInstructorId}
