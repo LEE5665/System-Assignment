@@ -24,17 +24,17 @@ function CourseForm({
       <h2>과목 추가</h2>
       <div className={styles.inputGroup}>
         <label>과목명</label>
-        <input type="text" value={courseName} onChange={(e) => setCourseName(e.target.value)} required />
+        <input type='text' value={courseName} onChange={(e) => setCourseName(e.target.value)} required />
       </div>
       <div className={styles.inputGroup}>
         <label>과목 코드</label>
-        <input type="text" value={courseCode} onChange={(e) => setCourseCode(e.target.value)} required />
+        <input type='text' value={courseCode} onChange={(e) => setCourseCode(e.target.value)} required />
       </div>
       <div className={styles.inputGroup}>
         <label>교수 ID</label>
-        <input type="text" value={instructorId} onChange={(e) => setInstructorId(e.target.value)} required />
+        <input type='text' value={instructorId} onChange={(e) => setInstructorId(e.target.value)} required />
       </div>
-      <button type="submit" className={styles.submitButton}>
+      <button type='submit' className={styles.submitButton}>
         과목 추가
       </button>
     </form>
@@ -58,21 +58,21 @@ function SectionForm({
       <h2>반 추가</h2>
       <div className={styles.inputGroup}>
         <label>학년</label>
-        <input type="text" value={grade} onChange={(e) => setGrade(e.target.value)} required />
+        <input type='text' value={grade} onChange={(e) => setGrade(e.target.value)} required />
       </div>
       <div className={styles.inputGroup}>
         <label>반</label>
-        <input type="text" value={className} onChange={(e) => setClassName(e.target.value)} required />
+        <input type='text' value={className} onChange={(e) => setClassName(e.target.value)} required />
       </div>
       <div className={styles.inputGroup}>
         <label>시작 교시</label>
-        <input type="number" value={minhour} onChange={(e) => setMinhour(e.target.value)} required />
+        <input type='number' value={minhour} onChange={(e) => setMinhour(e.target.value)} required />
       </div>
       <div className={styles.inputGroup}>
         <label>종료 교시</label>
-        <input type="number" value={maxhour} onChange={(e) => setMaxhour(e.target.value)} required />
+        <input type='number' value={maxhour} onChange={(e) => setMaxhour(e.target.value)} required />
       </div>
-      <button type="submit" className={styles.submitButton}>
+      <button type='submit' className={styles.submitButton}>
         반 추가
       </button>
     </form>
@@ -86,16 +86,15 @@ function StudentForm({ studentId, setStudentId, handleStudentSubmit }) {
       <h2>학생 추가</h2>
       <div className={styles.inputGroup}>
         <label>학생 ID</label>
-        <input type="text" value={studentId} onChange={(e) => setStudentId(e.target.value)} required />
+        <input type='text' value={studentId} onChange={(e) => setStudentId(e.target.value)} required />
       </div>
-      <button type="submit" className={styles.submitButton}>
+      <button type='submit' className={styles.submitButton}>
         학생 추가
       </button>
     </form>
   );
 }
 
-// 메인 컴포넌트
 export default function AddCoursePage() {
   const [courseName, setCourseName] = useState('');
   const [courseCode, setCourseCode] = useState('');
@@ -254,7 +253,7 @@ export default function AddCoursePage() {
       <CourseForm
         courseName={courseName}
         setCourseName={setCourseName}
-        courseCode={courseCode}
+        courseCode={setCourseCode}
         setCourseCode={setCourseCode}
         instructorId={instructorId}
         setInstructorId={setInstructorId}
@@ -270,7 +269,9 @@ export default function AddCoursePage() {
               setSelectedCourse(course);
               fetchSections(course.id);
             }}
-            className={styles.courseItem}
+            className={`${styles.courseItem} ${
+              selectedCourse && selectedCourse.id === course.id ? styles.selectedCourse : ''
+            }`}
           >
             {course.courseName} ({course.courseCode})
           </li>
@@ -296,7 +297,13 @@ export default function AddCoursePage() {
           <h3>{selectedCourse.courseName}에 속한 반</h3>
           <ul className={styles.sectionList}>
             {sections.map((section) => (
-              <li key={section.id} onClick={() => setSelectedSection(section)} className={styles.sectionItem}>
+              <li
+                key={section.id}
+                onClick={() => setSelectedSection(section)}
+                className={`${styles.sectionItem} ${
+                  selectedSection && selectedSection.id === section.id ? styles.selectedCourse : ''
+                }`}
+              >
                 {section.grade} 학년, {section.className} 반
               </li>
             ))}
