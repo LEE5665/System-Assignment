@@ -1,0 +1,62 @@
+.container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2rem;
+  color: #333333;
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.field:hover {
+  background-color: #f9f9f9;
+  transition: background-color 0.3s ease;
+}
+
+
+.icon {
+  color: #4A90E2;
+  margin-right: 15px;
+  font-size: 1.5rem;
+  min-width: 24px;
+}
+
+.label {
+  flex: 0 0 100px;
+  font-weight: bold;
+  color: #555555;
+}
+
+.value {
+  flex: 1;
+  color: #333333;
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 20px;
+    margin: 20px;
+  }
+
+  .label {
+    flex: 0 0 80px;
+    font-size: 0.9rem;
+  }
+
+  .value {
+    font-size: 0.9rem;
+  }
+}

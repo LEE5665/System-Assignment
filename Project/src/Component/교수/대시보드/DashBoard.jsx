@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import styles from './DashBoard.module.css';
 
-export default function DashBoard({ data }) {
+export default function DashBoard() {
   const accessToken = Cookies.get('accessToken');
   const [openDropdown, setOpenDropdown] = useState(null);
   const [courses, setCourses] = useState([]);
