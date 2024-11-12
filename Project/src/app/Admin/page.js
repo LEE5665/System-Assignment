@@ -305,7 +305,7 @@ export default function AddCoursePage() {
                   selectedSection && selectedSection.id === section.id ? styles.selectedCourse : ''
                 }`}
               >
-                {section.grade} 학년, {section.className} 반
+                {section.grade} 학년, {section.class} 반
               </li>
             ))}
           </ul>
